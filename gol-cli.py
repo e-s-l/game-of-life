@@ -1,4 +1,4 @@
-# gol-clir.py
+# gol-cli.py
 # game of life
 # in command line interface
 
