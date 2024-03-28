@@ -10,7 +10,7 @@ import numpy as np
 
 ###board stuff:
 ALIVE = '+'
-DEAD = '-'
+DEAD = '.'
 
 
 class GameOfLife():
@@ -34,7 +34,7 @@ class GameOfLife():
         ##
         size = os.get_terminal_size()
         cols = (int)(size.columns)
-        rows  = (int)(size.lines-2)
+        rows  = (int)(size.lines-4)
 
         #return population as np array
         return np.random.randint(2,size=(rows, cols))
@@ -45,7 +45,7 @@ class GameOfLife():
     def printBoard(self,population,generation):
 
         ##
-        headerInfo = "Generation: {}".format(generation)
+        headerInfo = "\n Generation: {} \n".format(generation)
         print(headerInfo)
         #
         output = ""
