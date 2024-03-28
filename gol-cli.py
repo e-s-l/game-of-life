@@ -7,8 +7,7 @@ import sys
 import os
 import time
 
-   ###board stuff:
-#
+###board stuff:
 ALIVE = '+'
 DEAD = '-'
 
@@ -32,7 +31,6 @@ class GameOfLife():
     ##############################
     def setUp(self):
         ##
-        #
         size = os.get_terminal_size()
         number_cols = (int)(size.columns)
         number_rows  = (int)(size.lines-2)
@@ -49,7 +47,7 @@ class GameOfLife():
         ##
         headerInfo = "Generation: {}".format(generation)
         print(headerInfo)
-
+        #
         output = ""
         for i in range(len(population)):
             for j in range(len(population[0])):
@@ -81,16 +79,20 @@ class GameOfLife():
     ####
     def newGeneration(self, population):
 
+        ###################################
         # ORIGINAL RULES
         #for living cells:
         #count number of living neighbours (noln)
         #if noln < 2 then die
         #if noln > 3 then die
         #if dead, if noln = 3 then revive.
+        ##################################
+
+
         rows = len(population)
         cols = len(population[0])
 
-        new_population = [[0] * cols for _ in range(rows)]
+        new_population = [[0] * cols for i in range(rows)]
 
         for i in range(rows):
             for j in range(cols):
@@ -111,17 +113,14 @@ class GameOfLife():
                         new_population[i][j] = 1
 
         return new_population
-
-
-
-    ###
 ###
 
 
 ###
-
 if __name__ == "__main__":
 
     #create game object:
     game = GameOfLife()
    
+
+#############################################
