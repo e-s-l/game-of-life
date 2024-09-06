@@ -24,7 +24,9 @@ program gol_cli
         call sleep(1)
     end do
 
-    contains 
+    !!!!!!!!
+    contains
+    !!!!!!!!
 
     subroutine display(generation, rows, cols, population)
         ! can i learn n use ncurses ported to fortran for this?
@@ -56,7 +58,7 @@ program gol_cli
         integer :: generation
         integer, intent(inout), dimension(rows,cols) :: population
 
-
+        
 
         generation = generation + 1
 
