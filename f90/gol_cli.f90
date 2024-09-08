@@ -4,24 +4,24 @@ program gol_cli
     !
     implicit none
 
-    integer :: i, j, max
+    integer :: i, j, end, k
     integer :: generation, rows, cols
     integer, allocatable, dimension(:,:) :: population, next_gen
 
     ! initialise
-    call set_up(generation, rows, cols, population, next_gen)
+    call set_up(generation, k, rows, cols, population, next_gen)
 
     !
-    max = 1000
+    end = 1000
     
     ! while true
-    do while (generation.lt.max) 
+    do while (generation.lt.end) 
         ! print board
         call display(generation, rows, cols, population)
         ! increment generation & calculate new population
-        call generate(generation, rows, cols, population, next_gen)
+        call generate(generation, k, rows, cols, population, next_gen)
         ! wait a sec
-         call sleep(1)
+        call sleep(1)
     end do
 
     !!!!!!!!
@@ -54,15 +54,16 @@ program gol_cli
     end subroutine display
 
     
-    subroutine set_up(generation, rows, cols, population, next_gen)
+    subroutine set_up(generation, k, rows, cols, population, next_gen)
         !
         implicit none
-        integer :: i, j
+        integer :: i, j, k
         integer :: generation, rows, cols
         integer, allocatable, intent(out), dimension(:,:) :: population, next_gen
         real, allocatable, dimension(:,:) :: seed
 
         generation = 0
+        k = 0
 
         ! the classical terminal viewport is (24, 80)
         rows = 12
@@ -78,26 +79,26 @@ program gol_cli
 
     end subroutine set_up
 
-    subroutine generate(generation, rows, cols, population, next_gen)
+    subroutine generate(generation, k, rows, cols, population, next_gen)
         !
         implicit none
         integer, intent(inout) :: generation, rows, cols
-        integer, intent(inout), dimension(rows, cols) :: population, next_gen
-        integer :: noln, i, j
-        real :: rmin, rmax, cmin, cmax, k
+        integer, intent(inout), allocatable, dimension(:, :) :: population, next_gen
+        integer :: noln, i, j, k
+        real :: rmin, rmax, cmin, cmax
 
         ! initialise the whole next gen array to zeros, for starts
         next_gen = 0
 
-        do i = 2, (rows-1)
-            do j = 2, (cols-1)
+        do i = 1, rows
+            do j = 1, cols
 
-         !        print *, max(8, 2)
-        !        c_min = MAX(j, 2)
-        !        cmax = min(cols,j+1)
-        !        rmin = max(i,2)
-        !        rmax = min(rows,i+1)
-                noln = sum(population(i-1:i+1, j-1:j+1)) - population(i, j)
+     
+                cmin = INT(MAX(j-1, 1))
+                cmax = INT(MIN(cols,j+1))
+                rmin = INT(MAX(i-1,1))
+                rmax = INT(MIN(rows,i+1))
+                noln = SUM(population(rmin:rmax, cmin:cmax)) - population(i, j)
 
                 if (population(i,j) == 1) then
                     if (noln.lt.2 .or. noln.gt.3) then
@@ -113,6 +114,15 @@ program gol_cli
             end do
         end do
 
+        !!!   
+        if (ALL(next_gen==population)) then
+            k = k + 1;
+            if (k.gt.5) then 
+                print *, 'stable, restarting'
+                call set_up(generation, rows, cols, population, next_gen)
+            end if
+        end if
+        !!!
         population = next_gen
         generation = generation + 1
 
