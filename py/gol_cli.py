@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # gol-cli.py
 # game of life
 # in command line interface
@@ -70,7 +72,7 @@ class GameOfLife():
                 #increment counter:
                 generation += 1
                 # wait a (tenth of a) sec
-                time.sleep(0.1)
+                time.sleep(0.2)
             ###
         except KeyboardInterrupt:
             print("\n:)\n")
